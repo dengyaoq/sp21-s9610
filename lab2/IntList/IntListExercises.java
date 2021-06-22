@@ -1,6 +1,12 @@
 package IntList;
 
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
 public class IntListExercises {
+
+    public static boolean isChanged = false;
 
     /**
      * Part A: (Buggy) mutative method that adds a constant C to each
@@ -13,8 +19,12 @@ public class IntListExercises {
         while (head.rest != null) {
             head.first += c;
             head = head.rest;
+            if (head.rest == null) {
+                head.first += c;
+            }
         }
     }
+
 
     /**
      * Part B: Buggy method that sets node.first to zero if
@@ -26,14 +36,18 @@ public class IntListExercises {
     public static void setToZeroIfMaxFEL(IntList L) {
         IntList p = L;
         while (p != null) {
-            if (firstDigitEqualsLastDigit(max(p))) {
+            int currentMax = max(p);
+            boolean firstEqualsLast = firstDigitEqualsLastDigit(currentMax);
+            if (firstEqualsLast) {
                 p.first = 0;
             }
             p = p.rest;
         }
     }
 
-    /** Returns the max value in the IntList starting at L. */
+    /**
+     * Returns the max value in the IntList starting at L.
+     */
     public static int max(IntList L) {
         int max = L.first;
         IntList p = L.rest;
@@ -46,12 +60,13 @@ public class IntListExercises {
         return max;
     }
 
-    /** Returns true if the last digit of x is equal to
-     *  the first digit of x.
+    /**
+     * Returns true if the last digit of x is equal to
+     * the first digit of x.
      */
     public static boolean firstDigitEqualsLastDigit(int x) {
         int lastDigit = x % 10;
-        while (x > 10) {
+        while (x >= 10) {
             x = x / 10;
         }
         int firstDigit = x % 10;
@@ -65,6 +80,25 @@ public class IntListExercises {
      * @param lst IntList from Lecture
      * @return True if there was an update to the list
      */
+
+    public static boolean squarePrimes(IntList lst) {
+        // Base Case: we have reached the end of the list
+        if (lst == null) {
+            return false;
+        }
+        boolean currElemIsPrime = Primes.isPrime(lst.first);
+
+        if (currElemIsPrime) {
+            lst.first *= lst.first;
+            isChanged = true;
+        }
+        squarePrimes(lst.rest);
+
+        return isChanged;
+
+    }
+    /*
+
     public static boolean squarePrimes(IntList lst) {
         // Base Case: we have reached the end of the list
         if (lst == null) {
@@ -77,6 +111,12 @@ public class IntListExercises {
             lst.first *= lst.first;
         }
 
-        return currElemIsPrime || squarePrimes(lst.rest);
+        /*if (lst.rest == null) {
+            return currElemIsPrime;
+        }
+
+        return squarePrimes(lst.rest) || currElemIsPrime;
     }
+     */
 }
+
