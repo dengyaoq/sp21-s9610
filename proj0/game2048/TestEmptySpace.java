@@ -124,6 +124,7 @@ public class TestEmptySpace {
         assertFalse("Board is full\n" + b, Model.emptySpaceExists(b));
     }
 
+
     @Test
     /** Tests a completely full board. */
     public void testFullBoardNoMerge() {

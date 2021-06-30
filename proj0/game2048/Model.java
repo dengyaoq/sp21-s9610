@@ -5,7 +5,7 @@ import java.util.Observable;
 
 
 /** The state of a game of 2048.
- *  @author TODO: YOUR NAME HERE
+ *  @author TODO: DYQ
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -113,7 +113,14 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        for (int i = 0; i < board.size(); i++) {
+            for (int j = 0; j < board.size(); j++) {
+                //if there is one space empty
+                if (board.tile(i, j) != null){
+                    board.move(i,j, tile(i,j));
+                }
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
@@ -138,9 +145,42 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+
+
+        for (int i = 0; i < b.size(); i++) {
+            for (int j = 0; j < b.size(); j++) {
+                //if there is one space empty
+                if (b.tile(i, j) == null)
+                    return true;
+            }
+        }
         return false;
     }
 
+
+//* my version which is more verbose. Was not using the simple return true/false as it can just break through the nested loop.
+     /*  int column = 0;
+        int row = 0;
+ 
+        while (isThereABreak == false && row < b.size()) {
+            while (row < b.size()) {
+                while ( column < b.size()) {
+                    if (b.tile(column, row) == null) {
+                        isThereABreak = true;
+                        break;
+                    } else isThereABreak = false;
+                    column = column + 1;
+                }
+                column = 0;
+                if (isThereABreak == true) {
+                    break;
+                }
+                row = row +1;
+            }
+        }
+        return isThereABreak;
+    }
+  */
     /**
      * Returns true if any tile is equal to the maximum valid value.
      * Maximum valid value is given by MAX_PIECE. Note that
@@ -148,7 +188,17 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
-        return false;
+       for (int i=0; i<b.size(); i++){
+       for (int j=0; j<b.size(); j++){
+           if (b.tile(i,j) != null){
+               if (b.tile(i,j).value() == Model.MAX_PIECE){
+                   return true;
+               }
+           }
+
+       }
+       }
+       return false;
     }
 
     /**
@@ -159,9 +209,65 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b) == true){
+            return true;
+        }
+   /*     if (isUpEqual(b) == true){
+            return true;
+        }
+
+    */
+       if (isDownEqual(b) == true){
+            return true;
+        }
+         if (isLeftEqual(b) == true){
+            return true;
+            }
+   /*
+        if (isRightEqual == true){
+            return true;
+        }
+*/
         return false;
     }
 
+    // helper:
+   /* dont actually need it lol
+    public static boolean isUpEqual(Board b) {
+        // TODO: Fill in this function.
+        for (int i=0; i<b.size(); i++){
+            for (int j=0; j<b.size()-1; j++){
+                    if (b.tile(i, j).value() == b.tile(i, j+1).value()){
+                        return true;
+                    }
+            }
+        }
+        return false;
+    }
+   */
+    public static boolean isDownEqual(Board b) {
+        // TODO: Fill in this function.
+        for (int i=0; i<b.size(); i++){
+            for (int j=1; j<b.size(); j++){
+                if (b.tile(i, j).value() == b.tile(i, j-1).value()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean isLeftEqual(Board b) {
+        // TODO: Fill in this function.
+        for (int i=1; i<b.size(); i++){
+            for (int j=0; j<b.size(); j++){
+                if (b.tile(i, j).value() == b.tile(i-1, j).value()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */

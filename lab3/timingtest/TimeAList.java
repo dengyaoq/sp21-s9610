@@ -1,6 +1,8 @@
 package timingtest;
 import edu.princeton.cs.algs4.Stopwatch;
 
+import java.util.ArrayList;
+
 /**
  * Created by hug.
  */
@@ -21,7 +23,31 @@ public class TimeAList {
         timeAListConstruction();
     }
 
+    //return the time taken to produce the new list timeUsed with length numberOfcalls;
+    public static double timeUsed (int numberOfcalls){
+        Stopwatch sw = new Stopwatch();
+        AList timeRecording = new AList();
+        for (int x = 0; x < numberOfcalls; x+=1){
+             timeRecording.addLast(x);
+        }
+        double timeInSeconds = sw.elapsedTime();
+        return timeInSeconds;
+    }
     public static void timeAListConstruction() {
         // TODO: YOUR CODE HERE
+        int size = 100000000;
+    AList N = new AList();
+    for (int i=1000;i<size; i=i*2){
+        N.addLast(i);
+    }
+    AList timeRecorder = new AList();
+    for (int i=0; i<N.size(); i+=1){
+        //need to cast the N.get method since it returns objects (cast it into integer)
+        timeRecorder.addLast(timeUsed((Integer) N.get(i)));
+    }
+
+    printTimingTable(N, timeRecorder, N);
+
+
     }
 }
